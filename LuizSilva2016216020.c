@@ -22,6 +22,11 @@
 // #################################################
 
 #include <stdio.h>
+#include <stdio.h>
+#include <string.h>
+#define TamDia 3
+#define TamMes 3
+#define TamAno 5
 
 /*
 ## função utilizada para testes  ##
@@ -56,6 +61,30 @@ int fatorial(int x){ //função utilizada para testes
   return fat;
 }
 
+int verificaData(int dia, int mes, int ano){
+    int dataStatus;
+
+	if (mes > 12 || mes < 1 || dia < 1 || dia > 31){
+		dataStatus = 0;
+	}
+	else if ((dia < 1 && dia > 31) && (mes == 1||mes == 3||mes == 5||mes == 7||mes == 8||mes == 10||mes == 12)) {
+		dataStatus = 0;
+	}
+	else if ((dia < 1 && dia > 30) && (mes == 4|| mes == 6 || mes == 9 || mes == 11)){
+        dataStatus = 0;
+    }
+	else if (ano % 400 == 0 || (ano % 4 == 0 && ano % 100 != 0)) {
+		if (mes == 2 && dia > 29) {
+			dataStatus = 0;
+		}
+	}
+	else if (mes == 2 && dia > 28) {
+		dataStatus = 0;
+	}
+
+	return dataStatus;
+}
+
 /*
  Q1 = validar data
 @objetivo
@@ -68,15 +97,29 @@ int fatorial(int x){ //função utilizada para testes
  */
 int q1(char *data){
     int datavalida = 1;
+    char dia[tamDia], mes[TamMes], ano[TamAno];
+    int i, j, dia, mes, ano;
 
-    //printf("%s\n", data);
+    for(i = 0; data[i] != '/'; i++){
+        dia[i] = data[i];
+    }
+    dia = atoi(dia);
 
+    for(i = i + 1, j = 0; data[i] != '/'; i++ , j++){
+        mes[j] = data[i];
+    }
+    mes = atoi(mes);
 
-    if (datavalida)
-        return 1;
-    else
+    for(i = i + 1, j = 0; data[i] != '\0'; i++, j++){
+        ano[j] = data[i];
+    }
+    ano = atoi(ano);
+
+    if(verificaData(dia,mes,ano) == 0){
         return 0;
-
+    }else{
+        return 1;
+    }
 }
 
 /*
@@ -168,10 +211,22 @@ int q4(char *strTexto, char *strBusca, int posicoes[30]){
  @saida
     Número invertido
  */
+int inverteNumero(int num){
+  int inverso=0, i=1;
+
+  while(i<=num){
+    inverso*=10;
+    inverso+=(num%(i*10)-num%i)/i;
+    i*=10;
+  }
+  return inverso;
+}
 
 int q5(int num){
+   int numeroInverso = 0;
+   numeroInverso = inverteNumero(num);
 
-    return num;
+   return numeroInverso;
 }
 
 /*
@@ -185,6 +240,51 @@ int q5(int num){
  */
 
 int q6(int numerobase, int numerobusca){
-    int qtdOcorrencias;
-    return qtdOcorrencias;
+   int qtdOcorrencias = 0;
+   int baseItem[300], buscaItem[300];
+   int auxBase = 0, i = 0, j = 0, controle = 0, auxBusca = 0;
+
+	while(numerobase >= 0){
+		if(numerobase < 10 && numerobase >= 0){
+			baseItem[auxBase] = numerobase;
+			break;
+		} else {
+			baseItem[auxBase] = numerobase % 10;
+			numerobase = numerobase / 10;
+			auxBase++;
+		}
+	}
+
+	while(numerobusca >= 0){
+		if(numerobusca < 10 && numerobase >= 0){
+			buscaItem[auxBusca] = numerobusca;
+			break;
+		} else {
+			buscaItem[auxBusca] = numerobusca % 10;
+			numerobusca = numerobusca / 10;
+			auxBusca++;
+		}
+	}
+
+	for (i = 0; i <= auxBase; ++i){
+		if(auxBusca == 0){
+			if (buscaItem[0] == baseItem[i]){
+				qtdOcorrencias++;
+			}
+		} else {
+			if(buscaItem[j] == baseItem[i]){
+				controle = 1;
+				j++;
+			} else if (buscaItem[j] != baseItem[i]){
+				controle = 0;
+				j = 0;
+			}
+			if(controle == 1 && j == auxBusca){
+				controle = 0;
+				j = 0;
+				qtdOcorrencias++;
+			}
+		}
+	}
+   return qtdOcorrencias;
 }
