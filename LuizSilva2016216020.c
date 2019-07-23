@@ -196,10 +196,40 @@ int q3(char *texto, char c, int isCaseSensitive){
 
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30]){
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+    int texto_numero[100];
+    int texto_busca[100];
+    int i = 0, l = 0, z = 0, a = 0, k = 0;
 
-    return qtdOcorrencias;
+    //Pega o tamanho do texto principal
+    for (i = 0; strTexto[i] != '\0'; i+=1){
+      if(strTexto[i] < 0){
+          i += 1;
+      }
+      texto_numero[i] = strTexto[i];
+    }
 
+    //Pega o tamanho do texto de busca
+    for (l = 0; strBusca[l] != '\0'; l+=1){
+      if(strBusca[l] < 0){
+          l += 1;
+      }
+      texto_busca[l] = strBusca[l];
+    }
+
+    for(z=0; z<strTexto[z] != '\0'; z++){
+      if(texto_numero[z] == texto_busca[k]){
+        qtdOcorrencias++;
+        for(a = 1; a<strBusca[a] != '\0'; a++){
+          if(texto_numero[z+a] == texto_busca[a]){
+              qtdOcorrencias++;
+          } else {
+              qtdOcorrencias = 0;
+          }
+        }
+      }
+    }
+  return qtdOcorrencias;
 }
 
 /*
